@@ -25,22 +25,107 @@
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
 }
 
+/* Font Size Scaling */
+:root.font-xs { font-size: 14px; }
+:root.font-sm { font-size: 16px; }
+:root.font-md { font-size: 18px; }
+:root.font-lg { font-size: 20px; }
+:root.font-xl { font-size: 24px; }
+:root.font-xxl { font-size: 28px; }
+
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #e8f0fe;
   color: var(--gray-dark);
   min-height: 100vh;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px when root is 16px */
   line-height: 1.6;
+}
+
+/* ===== Toolbar ===== */
+.font-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--white);
+  padding: 12px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.toolbar-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.toolbar-buttons {
+  display: flex;
+  flex-wrap: wrap; /* Buttons can also wrap if needed */
+  justify-content: center;
+  gap: 6px;
+}
+
+.toolbar-btn {
+  border: 1px solid #d1d5db;
+  background: var(--white);
+  color: var(--gray-dark);
+  height: 32px; /* Slightly smaller height */
+  min-width: 32px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 0.75rem; /* Smaller fixed-ish size to prevent excessive growth */
+}
+
+.toolbar-btn:hover {
+  border-color: var(--blue-mid);
+  color: var(--blue-mid);
+}
+
+.toolbar-btn.active {
+  background: var(--blue-mid);
+  color: white;
+  border-color: var(--blue-mid);
 }
 
 /* ===== Layout ===== */
 .app-wrapper {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px 48px;
+  padding: 100px 16px 48px; /* Increased padding to account for potential wrapping */
+}
+
+@media (max-width: 480px) {
+  .font-toolbar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  
+  .toolbar-label {
+    font-size: 0.75rem;
+  }
+
+  .app-wrapper {
+    padding-top: 120px; /* Even more padding on very small screens where it likely wraps */
+  }
 }
 
 .app-header {
@@ -387,10 +472,10 @@ body {
 }
 
 .score-circle {
-  width: 140px;
-  height: 140px;
+  width: 6rem;
+  height: 6rem;
   border-radius: 50%;
-  margin: 0 auto 24px;
+  margin: 0 auto 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -34,6 +34,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const rawQuestions = useRef([]);
+  const [fontSize, setFontSize] = useState('md');
 
   async function loadQuestions() {
     setLoading(true);
@@ -54,6 +55,13 @@ export default function App() {
   useEffect(() => {
     loadQuestions();
   }, []);
+
+  useEffect(() => {
+    // Apply font size class to the root element
+    const root = document.documentElement;
+    root.classList.remove('font-xs', 'font-sm', 'font-md', 'font-lg', 'font-xl', 'font-xxl');
+    root.classList.add(`font-${fontSize}`);
+  }, [fontSize]);
 
   function startQuiz() {
     setQuestions(prepareQuestions(rawQuestions.current));
@@ -91,6 +99,29 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      <nav className="font-toolbar" aria-label="Font size controls">
+        <span className="toolbar-label">Text Size:</span>
+        <div className="toolbar-buttons">
+          {[
+            { id: 'xs', label: 'XS' },
+            { id: 'sm', label: 'SM' },
+            { id: 'md', label: 'MD' },
+            { id: 'lg', label: 'LG' },
+            { id: 'xl', label: 'XL' },
+            { id: 'xxl', label: 'XXL' },
+          ].map((size) => (
+            <button
+              key={size.id}
+              className={`toolbar-btn ${fontSize === size.id ? 'active' : ''}`}
+              onClick={() => setFontSize(size.id)}
+              aria-label={`Set font size to ${size.label}`}
+            >
+              {size.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
       <header className="app-header">
         <h1>Java OOP Quiz</h1>
         <p>Learn Object-Oriented Programming step by step</p>
