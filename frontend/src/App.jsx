@@ -1,8 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Question from './components/Question';
 import Results from './components/Results';
 
 const PHASE = { START: 'start', QUIZ: 'quiz', RESULTS: 'results' };
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function prepareQuestions(raw) {
+  return shuffle(raw).map(q => {
+    const tagged = q.options.map((opt, i) => ({ opt, correct: i === q.correctIndex }));
+    const shuffled = shuffle(tagged);
+    return {
+      ...q,
+      options: shuffled.map(x => x.opt),
+      correctIndex: shuffled.findIndex(x => x.correct),
+    };
+  });
+}
 
 export default function App() {
   const [phase, setPhase] = useState(PHASE.START);
@@ -12,6 +33,7 @@ export default function App() {
   const [answered, setAnswered] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const rawQuestions = useRef([]);
 
   async function loadQuestions() {
     setLoading(true);
@@ -20,6 +42,7 @@ export default function App() {
       const res = await fetch('/api/questions');
       if (!res.ok) throw new Error('Failed to load questions');
       const data = await res.json();
+      rawQuestions.current = data;
       setQuestions(data);
     } catch (e) {
       setError('Could not load questions. Please make sure the server is running.');
@@ -33,6 +56,7 @@ export default function App() {
   }, []);
 
   function startQuiz() {
+    setQuestions(prepareQuestions(rawQuestions.current));
     setCurrentIndex(0);
     setAnswers([]);
     setAnswered(null);
