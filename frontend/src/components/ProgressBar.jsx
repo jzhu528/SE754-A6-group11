@@ -4,7 +4,7 @@ export default function ProgressBar({ current, total }) {
     <div className="progress-section" role="region" aria-label="Quiz progress">
       <div className="progress-label">
         <span>Question {current} of {total}</span>
-        <span>{percent}% complete</span>
+        <span>{percent}%</span>
       </div>
       <div
         className="progress-bar-track"
