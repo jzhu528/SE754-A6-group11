@@ -1,0 +1,16 @@
+{
+  "responses": [
+    {
+      "questionId": 1,
+      "selectedOption": "A blueprint for creating objects"
+    },
+    {
+      "questionId": 2,
+      "selectedOption": "An instance of a class"
+    },
+    {
+      "questionId": 3,
+      "selectedOption": null
+    }
+  ]
+}
